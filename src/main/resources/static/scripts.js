@@ -11,19 +11,22 @@ $("#btnRegisterDone").click(function () {
 });
 
 $("#btnLogin").click(function () {
+    $('#msgLoginFailed').hide();
     $.post("/authenticate/" + $("#login").val() + "/" + $("#password").val(), function (data, status) {
         if (data == 'AUTHENTICATED') {
             window.location.replace("secured.html");
         } else if (data == "REQUIRE_TOKEN_CHECK") {
             $("#modalLoginCheckToken").modal('show');
-        } else if (data == "FAILED") {
-            $('.alert').alert();
+        } else {
+            $('#msgLoginFailed').show();
         }
+    }).fail(function(){
+        $('#msgLoginFailed').show();
     });
 });
 
 $("#btnRegister").click(function () {
-    $.post("/register/" + $("#login").val() + "/" + $("#password").val(), function (data, status) {
+    $.post("/user/register/" + $("#login").val() + "/" + $("#password").val(), function (data, status) {
         if (status == 'success') {
             $("#tokenQr").attr("src", "https://zxing.org/w/chart?cht=qr&chs=250x250&chld=M&choe=UTF-8&chl=otpauth://totp/2FaExample.com?secret=" + data + "&issuer=2FaExample");
             $("#tokenValue").text(data);
@@ -33,11 +36,20 @@ $("#btnRegister").click(function () {
 });
 
 $("#btnTokenVerify").click(function () {
+    $('#msgTokenCheckFailed').hide();
     $.post("/authenticate/token/" + $("#login").val() + "/" + $("#password").val() + "/" + $("#loginToken").val(), function (data, status) {
         if (data == 'AUTHENTICATED') {
             window.location.replace("secured.html");
-        } else if (data == "FAILED") {
-            $('.alert').alert();
+        } else {
+            $('#msgTokenCheckFailed').show();
         }
+    }).fail(function(){
+        $('#msgTokenCheckFailed').show();
+    });
+});
+
+$("#btnLogout").click(function () {
+    $.post("/authenticate/logout", function (data, status) {
+        window.location.replace("index.html")
     });
 });
