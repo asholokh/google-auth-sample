@@ -1,4 +1,4 @@
-This is a sample implementation of two-factor authentication approach for web applications
+This is a sample implementation of two-factor authentication approach for web applications via Google Authenticator and TOTP algorithm.
 
 Web application is implemented using Spring Boot library.
 User registration and authenication services are implemented as REST end-points
