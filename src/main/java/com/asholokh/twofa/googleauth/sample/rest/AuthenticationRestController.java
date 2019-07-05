@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -54,7 +55,7 @@ public class AuthenticationRestController {
             return AuthenticationStatus.FAILED;
         }
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get().getLogin(), user.get().getPassword());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.get().getLogin(), user.get().getPassword(), new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return AuthenticationStatus.AUTHENTICATED;
